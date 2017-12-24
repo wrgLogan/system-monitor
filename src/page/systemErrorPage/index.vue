@@ -1,0 +1,29 @@
+<template>
+  <div class="page">
+      <div class="action-container">
+        <Button class="refresh-btn" type="primary" :loading="loading" @click="toLoading">
+            <span v-if="!loading">刷新</span>
+            <span v-else>Loading...</span>
+        </Button>
+      </div>
+      <Table border :columns="columns" :data="errList"></Table>
+      <div class="action-container">
+        <Page
+          :page-size="10" 
+          :total="100">
+        </Page>
+      </div>
+      <!-- 日志详情对话框 -->
+      <Modal
+        v-model="modal"
+        width="1000"
+        :styles="{top: '20px'}"
+        title="错误详情"
+        ok-text="确认"
+        cancel-text="取消">
+        <div class="errInfo-container"></div>
+      </Modal>
+  </div>
+</template>
+<script src="./script.js"></script>
+<style scoped src="./style.css"></style>

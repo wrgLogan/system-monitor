@@ -1,0 +1,15 @@
+.errInfo-container{
+    max-height: 430px;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.action-container{
+    margin: 10px 0 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.refresh-btn{
+    margin-right: 20px;
+}
