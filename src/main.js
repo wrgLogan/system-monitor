@@ -9,7 +9,7 @@ import pageSwitcher from './plugins/page-switcher.js'
 import cookie from './plugins/cookie'
 import './assets/css/transition.css'
 import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+// import 'iview/dist/styles/iview.css';
 
 Vue.use(iView);
 Vue.use(storage);
