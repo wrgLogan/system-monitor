@@ -21,7 +21,7 @@ module.exports = {
         },
       },
       '/v0/*': {
-        target: 'http://120.132.103.62:8080',
+        target: 'http://10.0.22.123:58080',
         changeOrigin: true,
         headers: {
           'Accept' : 'application/json, text/plain',
@@ -79,8 +79,8 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static_backend',
-    assetsPublicPath: '/',
+    assetsSubDirectory: 'static',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

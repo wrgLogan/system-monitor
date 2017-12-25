@@ -5,15 +5,16 @@ import manage from '@/page/managePage/index'
 import index from '@/page/indexPage/index'
 import systemError from '@/page/systemErrorPage/index'
 import link from '@/page/linkPage/index'
+import linkInfo from '@/page/linkInfoPage/index'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '*',
       name: '登录',
-      component: login
+      redirect: '/manage/systemerror'
     },
     {
       path: '/manage',
@@ -34,8 +35,14 @@ export default new Router({
           path: 'link',
           name: '调用链路',
           component: link,
+        },
+        {
+          path: 'linkinfo/:traceId',
+          name: '调用链路详情',
+          component: linkInfo,
         }
       ]
-    }
+    },
+    
   ]
 })

@@ -6,11 +6,12 @@
             <span v-else>Loading...</span>
         </Button>
       </div>
-      <Table border :columns="columns" :data="errList"></Table>
+      <Table :loading="loading" border :columns="columns" :data="traceList"></Table>
       <div class="action-container">
         <Page
-          :page-size="10" 
-          :total="100">
+          @on-change="onPageChange"
+          :page-size="pagination.pageSize" 
+          :total="pagination.totalCount">
         </Page>
       </div>
       <!-- 日志详情对话框 -->

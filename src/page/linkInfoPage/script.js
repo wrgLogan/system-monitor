@@ -8,7 +8,7 @@ export default {
                 },
                 {
                     title: '调用入口',
-                    key: 'ENTRY_SPAN'
+                    key: 'PARENT_SPAN'
                 },
                 {
                     title: '开始时间',
@@ -45,80 +45,70 @@ export default {
                                 on: {
                                     click: () => {
                                         // console.log(this);
-                                        this.show(params.row);
+                                        this.show(params.row)
                                     }
                                 }
-                            }, '查看')
+                            }, '详情')
                         ])
                     }
                 }
             ],
-            traceList: [],
+            spanList: [],
             modal: false,
             loading: false,
-            pagination: {
-                pageNumber: 1,
-                pageSize: 10,
-                totalCount: 0
-            },
+            spanDetail: {
+                spanError: [],
+                spanInfo: [],
+                spanWarn: []
+            }
         }
     },
     methods: {
-        show (traceItem) {
-
-            this.$switchTo(`/manage/linkinfo/${traceItem['TRACE_ID']}`);
+        show (spanItem) {
+            let spanKey = `SPAN:${spanItem.SPAN_ID}`;
+            this.modal = true;
+            // this.loadingBar.start();
+            console.log(this);
+            this.axios.get(`/v0/trace/span/logs/${this.traceKey}/${spanKey}`).then(res => {
+                if (res.status === 200) {
+                    console.log(res);
+                    this.spanDetail = res.data;
+                }
+            })
         },
         toLoading() {
             var _this = this;
             this.loading = true;
             
-            setTimeout(function() {
-                _this.loading = false;
-            }, 3000)
+            this.getSpans().then(res => {
+                this.loading = false;
+            });
         },
-        getTraces() {
+        getSpans() {
 
             return new Promise((resolve, reject) => {
-                this.axios.get(`/v0/trace/list/${this.pagination.pageNumber}`).then( res => {
+                this.axios.get(`/v0/trace/spans/${this.traceKey}`).then(res => {
                     console.log(res);
                     if (res.status === 200) {
-                        this.traceList = res.data.data;
-                        this.traceList = this.traceList.filter(item => {
+                        this.spanList = res.data.filter(item => {
                             return Object.keys(item).length;
-                        })
-
-                        console.log(this.traceList);
-                        this.pagination = {
-                            pageNumber: res.data.pageNumber,
-                            pageCount: res.data.pageCount,
-                            pageSize: res.data.pageSize,
-                            totalCount: res.data.totalCount
-                        }
+                        });
                         resolve(res);
                     } else {
                         reject(res)
                     }
-                }).catch( err => {
+                }).catch(err => {
                     reject(err);
                 })
             })
             
-        },
-        onPageChange(page) {
-            console.log(page);
-            this.loading = true;
-            this.pagination.pageNumber = page;
-            this.getTraces().then( res => {
-                this.loading = false;
-            });
         }
     },
     mounted: function(){
         this.loading = true;
-        this.getTraces().then(res => {
+        this.traceKey = `TRACE:${this.$route.params.traceId}`;
+        this.getSpans().then(res => {
             this.loading = false;
-        }).catch(err => {
-            console.log(err);
-        })
+        });
     }
 }
